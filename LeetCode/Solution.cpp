@@ -124,6 +124,8 @@ void Solution::combinationSum(vector<vector<int>>& result, vector<int> usedNums,
 
 void Solution::reorderList(ListNode* head){
     // find middle node
+    if (head == NULL)
+        return;
     ListNode* middleNode = head;
     ListNode* node = head;
     while(node != NULL && node->next != NULL)
@@ -132,16 +134,26 @@ void Solution::reorderList(ListNode* head){
         node = node->next->next;
     }
     //revert last half
-    node = middleNode;
+    node = middleNode->next ;
     while(node != NULL && node->next != NULL)
     {
         ListNode* temp;
         temp = node->next;
-        node->next = node->next->next;
-        temp->next = middleNode;
-        middleNode = temp;
+        node->next = temp->next;
+        temp->next = middleNode->next;
+        middleNode->next = temp;
     }
     //merge together
+    node = head;
+    while (middleNode != NULL && middleNode->next != NULL)
+    {
+        ListNode* temp;
+        temp = middleNode->next;
+        middleNode->next = temp->next;
+        temp->next = node->next;
+        node->next = temp;
+        node = temp->next;
+    }
 }
 
 
